@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Region" load_steps=2 format=3 uid="uid://bnjhw217uydr"]
+
+[ext_resource type="Script" uid="uid://c5eaosd0bug1o" path="res://scripts/misc classes/Region.gd" id="1_n242r"]
+
+[resource]
+script = ExtResource("1_n242r")
+name = "Catacombs"
+colors = Array[Color]([Color(0.878431, 0.439216, 0.698039, 1), Color(0.517647, 0.137255, 0.360784, 1), Color(0.341176, 0.0509804, 0.219608, 1), Color(0.25098, 0.0156863, 0.14902, 1)])
+metadata/_custom_type_script = "uid://c5eaosd0bug1o"

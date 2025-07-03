@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Region" load_steps=2 format=3 uid="uid://cx14slovu1xk8"]
+
+[ext_resource type="Script" uid="uid://c5eaosd0bug1o" path="res://scripts/misc classes/Region.gd" id="1_gs3xq"]
+
+[resource]
+script = ExtResource("1_gs3xq")
+name = "Castle Halls"
+colors = Array[Color]([Color(0.745098, 0.839216, 0.992157, 1), Color(0.411765, 0.619608, 0.988235, 1), Color(0.117647, 0.290196, 0.615686, 1), Color(0.00392157, 0.101961, 0.317647, 1)])
+metadata/_custom_type_script = "uid://c5eaosd0bug1o"

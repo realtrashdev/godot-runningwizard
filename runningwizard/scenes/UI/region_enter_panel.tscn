@@ -1,0 +1,107 @@
+[gd_scene load_steps=6 format=3 uid="uid://2bvutpa4etms"]
+
+[ext_resource type="Script" uid="uid://dbhgyy0usgkmg" path="res://scripts/UI/RegionEntrance.gd" id="1_0xxhd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0xxhd"]
+
+[sub_resource type="Animation" id="Animation_1exs3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/EnteringLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/RegionLabel:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_sn403"]
+resource_name = "display"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/EnteringLabel:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.8, 1.1, 1.4, 1.7, 2, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 0, 0, 0, 0, 0, 1, 1),
+"update": 0,
+"values": [0.0, 0.8, 0.87, 0.95, 1.0, 0.8, 0.85, 0.85, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/RegionLabel:visible_ratio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2, 3, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ebs6g"]
+_data = {
+&"RESET": SubResource("Animation_1exs3"),
+&"display": SubResource("Animation_sn403")
+}
+
+[node name="RegionEntrancePanel" type="PanelContainer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -64.0
+offset_top = 20.0
+offset_right = 64.0
+offset_bottom = 60.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0xxhd")
+script = ExtResource("1_0xxhd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="EnteringLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 8
+text = "Now Entering..."
+fit_content = true
+horizontal_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="RegionLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 8
+text = "- REGION NAME -"
+fit_content = true
+horizontal_alignment = 1
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ebs6g")
+}
+autoplay = "RESET"

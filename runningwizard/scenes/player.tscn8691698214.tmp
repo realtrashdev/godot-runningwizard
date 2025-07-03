@@ -1,0 +1,77 @@
+[gd_scene load_steps=12 format=3 uid="uid://c7akmihwts73n"]
+
+[ext_resource type="PackedScene" uid="uid://damraxuhfs78c" path="res://art/rw_nes_wizard.aseprite" id="1_dxroh"]
+[ext_resource type="Script" uid="uid://bcaikhjrgs2wb" path="res://scripts/Player.gd" id="1_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://du7sed0ba4hwb" path="res://scenes/components/hitbox_component.tscn" id="3_dqkch"]
+[ext_resource type="Script" uid="uid://bafwfibqoeefs" path="res://scripts/state machine/StateMachine.gd" id="3_qhqgy"]
+[ext_resource type="Script" uid="uid://dyexnmwg8o05l" path="res://scripts/components/HealthComponent.gd" id="3_smehm"]
+[ext_resource type="Script" uid="uid://bihtkqsfgfufq" path="res://scripts/state machine/player/PlayerIdle.gd" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://kp23plg38quo" path="res://scripts/state machine/player/PlayerJump.gd" id="6_tuyoq"]
+[ext_resource type="Script" uid="uid://bqw70ua0dmdxc" path="res://scripts/state machine/player/PlayerLand.gd" id="7_fjrip"]
+[ext_resource type="Script" uid="uid://c7im35wj6tkax" path="res://scripts/state machine/player/PlayerDamaged.gd" id="9_ur7pv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lfa7q"]
+radius = 2.0
+height = 10.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
+radius = 3.0
+height = 14.0
+
+[node name="Wizard" type="CharacterBody2D" groups=["Player"]]
+collision_layer = 129
+collision_mask = 129
+script = ExtResource("1_qlg0r")
+
+[node name="AnimatedSprite2D" parent="." instance=ExtResource("1_dxroh")]
+animation = &"damage"
+autoplay = "run"
+frame = 4
+frame_progress = 1.0
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_smehm")
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_dqkch")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0, 2)
+shape = SubResource("CapsuleShape2D_lfa7q")
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_qhqgy")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("4_dqkch")
+player = NodePath("../..")
+speed = 50.0
+metadata/_custom_type_script = "uid://bihtkqsfgfufq"
+
+[node name="Jump" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("6_tuyoq")
+player = NodePath("../..")
+speed = 50.0
+jump_velocity = -220.0
+metadata/_custom_type_script = "uid://kp23plg38quo"
+
+[node name="Land" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("7_fjrip")
+player = NodePath("../..")
+speed = 30.0
+land_time = 0.2
+metadata/_custom_type_script = "uid://bqw70ua0dmdxc"
+
+[node name="Damaged" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("9_ur7pv")
+player = NodePath("../..")
+damage_time = 0.6
+bounce_power = -100.0
+metadata/_custom_type_script = "uid://c7im35wj6tkax"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_qlg0r")
+
+[connection signal="state_changed" from="State Machine" to="." method="anim_update"]

@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://1jsk7vo3ws7b"]
+
+[ext_resource type="PackedScene" uid="uid://c7akmihwts73n" path="res://scenes/player.tscn" id="1_0ympq"]
+[ext_resource type="Script" uid="uid://ch50h1d0on2w6" path="res://scripts/RunnerManager.gd" id="1_c3n4i"]
+[ext_resource type="Resource" uid="uid://cx14slovu1xk8" path="res://scenes/resources/regions/CastleHalls.tres" id="2_21t6n"]
+[ext_resource type="PackedScene" uid="uid://bvxuu4dvkupf7" path="res://scenes/scrollingfloor.tscn" id="2_fwy1u"]
+[ext_resource type="PackedScene" uid="uid://ci2d2vbjya2pn" path="res://scenes/UI/score_panel.tscn" id="5_w7f2o"]
+[ext_resource type="Script" uid="uid://3xi65e0xy8lo" path="res://scripts/UI/Score.gd" id="6_g1srl"]
+[ext_resource type="PackedScene" uid="uid://2bvutpa4etms" path="res://scenes/UI/region_enter_panel.tscn" id="7_oan5l"]
+
+[node name="RunnerGame" type="Node2D"]
+script = ExtResource("1_c3n4i")
+default_speed = 1.0
+default_region = ExtResource("2_21t6n")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Wizard" parent="." instance=ExtResource("1_0ympq")]
+position = Vector2(-62, 22)
+
+[node name="Floor" parent="." instance=ExtResource("2_fwy1u")]
+position = Vector2(0, 40)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+volume_db = -10.0
+autoplay = true
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScorePanel" parent="UI" instance=ExtResource("5_w7f2o")]
+layout_mode = 0
+offset_left = -128.0
+offset_top = -112.0
+offset_right = -78.0
+offset_bottom = -91.0
+script = ExtResource("6_g1srl")
+
+[node name="RegionEntrancePanel" parent="UI" instance=ExtResource("7_oan5l")]
+layout_mode = 1
+offset_top = -70.0
+offset_bottom = -50.0
+
+[connection signal="RegionUpdate" from="." to="Floor" method="region_change"]
+[connection signal="RegionUpdate" from="." to="UI/ScorePanel" method="update_region"]
+[connection signal="RegionUpdate" from="." to="UI/RegionEntrancePanel" method="update_region"]
+[connection signal="SpeedUpdate" from="." to="Floor" method="speed_change"]
+[connection signal="SpeedUpdate" from="." to="UI/ScorePanel" method="update_speed"]
