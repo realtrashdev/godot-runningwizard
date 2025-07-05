@@ -15,23 +15,11 @@ func _ready() -> void:
 			print("got label")
 			labels.append(child)
 
-#func update_region(new_region: Region) -> void:
-#	region = new_region
-#	
-#	if region.colors.is_empty():
-#		print("colors[] is empty for this region!")
-#		return
-#	
-#	for label in labels:
-#		print(label)
-#		var tween = create_tween()
-#		tween.tween_property(label, "modulate", region.colors[0], 1)
-
 func update_region(new_region: Region) -> void:
 	region = new_region
 	
 	if region.colors.is_empty():
-		print("colors[] is empty for this region!")
+		print("RegionEntrance.gd: colors[] is empty for this region!")
 		return
 	
 	for label in labels:
@@ -41,7 +29,7 @@ func update_region(new_region: Region) -> void:
 		
 		var tween = create_tween()
 		tween.tween_property(label, "modulate", region.colors[0], 1.0)
-		
-		$VBoxContainer/RegionLabel.text = "- " + region.name + " -"
+	
+	$VBoxContainer/RegionLabel.text = "- " + region.name + " -"
 	
 	anim.play("display")

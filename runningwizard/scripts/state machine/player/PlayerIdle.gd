@@ -13,7 +13,7 @@ func physics_update(delta: float):
 	# left/right movement
 	movement()
 	
-	if air:
+	if !player.is_on_floor():
 		gravity(delta)
 
 	if Input.is_action_just_pressed("jump") and player.is_on_floor():

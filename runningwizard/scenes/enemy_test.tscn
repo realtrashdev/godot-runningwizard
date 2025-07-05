@@ -1,0 +1,42 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvlje4t1hpkjx"]
+
+[ext_resource type="Script" uid="uid://pqyiryuu1ed4" path="res://EnemyTest.gd" id="1_1yn4p"]
+[ext_resource type="Resource" uid="uid://cx14slovu1xk8" path="res://scenes/resources/regions/CastleHalls.tres" id="2_7wesy"]
+[ext_resource type="PackedScene" uid="uid://c0jtf3aledqtc" path="res://scenes/components/health_component.tscn" id="2_mo2s0"]
+[ext_resource type="PackedScene" uid="uid://du7sed0ba4hwb" path="res://scenes/components/hitbox_component.tscn" id="3_1yn4p"]
+[ext_resource type="PackedScene" uid="uid://do2k23x30u6vy" path="res://scenes/state_machine.tscn" id="4_mo2s0"]
+[ext_resource type="PackedScene" uid="uid://dikx16qkaqaq4" path="res://art/bluezone_knight.aseprite" id="6_7wesy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wesy"]
+size = Vector2(10, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j3aj1"]
+size = Vector2(16, 16)
+
+[node name="EnemyTest" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_1yn4p")
+enemy_name = "Test Enemy"
+enemy_region = ExtResource("2_7wesy")
+
+[node name="bluezone_knight" parent="." instance=ExtResource("6_7wesy")]
+position = Vector2(0, -1)
+animation = &"run"
+autoplay = "run"
+frame_progress = 0.40393
+
+[node name="HealthComponent" parent="." instance=ExtResource("2_mo2s0")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_1yn4p")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(-5, -1)
+shape = SubResource("RectangleShape2D_7wesy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_j3aj1")
+
+[node name="State Machine" parent="." instance=ExtResource("4_mo2s0")]
+
+[connection signal="area_entered" from="HitboxComponent" to="." method="_on_hitbox_component_area_entered"]

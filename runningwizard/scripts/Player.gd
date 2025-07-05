@@ -23,3 +23,7 @@ func anim_update(state_name: String) -> void:
 
 func update_speed(new_speed: float):
 	game_speed = new_speed
+
+func player_damaged(damage_amount: float, knockback_power: Vector2):
+	$"State Machine/Damaged".knockback_force = knockback_power
+	$"State Machine".manual_state_transition("damaged")

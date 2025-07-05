@@ -40,3 +40,16 @@ func on_child_transition(state, new_state_name):
 	current_state = new_state
 
 	state_changed.emit(new_state_name.to_lower())
+
+func manual_state_transition(new_state_name):
+	var new_state = states.get(new_state_name.to_lower())
+	if !new_state:
+		return
+	
+	if current_state:
+		current_state.exit()
+	
+	new_state.enter()
+	current_state = new_state
+
+	state_changed.emit(new_state_name.to_lower())

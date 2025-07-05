@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="runningwizard"
-run/main_scene="res://scenes/runningscene.tscn"
+run/main_scene="res://scenes/running_scene.tscn"
 config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
@@ -67,6 +67,11 @@ jump={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":0,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Enemy"
 
 [rendering]
 
