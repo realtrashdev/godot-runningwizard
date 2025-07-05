@@ -11,7 +11,7 @@ var region: Region
 
 
 func _process(delta: float) -> void:
-	score += (delta * 10) * (game_speed * game_speed)
+	score += (delta * 5) * (game_speed * game_speed)
 	display_score = lerpf(display_score, score, 10 * delta)
 	update_score_label()
 

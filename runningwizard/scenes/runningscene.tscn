@@ -10,7 +10,7 @@
 
 [node name="RunnerGame" type="Node2D"]
 script = ExtResource("1_c3n4i")
-default_speed = 1.0
+default_speed = 4.0
 default_region = ExtResource("2_21t6n")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -49,5 +49,6 @@ offset_bottom = -50.0
 [connection signal="RegionUpdate" from="." to="Floor" method="region_change"]
 [connection signal="RegionUpdate" from="." to="UI/ScorePanel" method="update_region"]
 [connection signal="RegionUpdate" from="." to="UI/RegionEntrancePanel" method="update_region"]
+[connection signal="SpeedUpdate" from="." to="Wizard" method="update_speed"]
 [connection signal="SpeedUpdate" from="." to="Floor" method="speed_change"]
 [connection signal="SpeedUpdate" from="." to="UI/ScorePanel" method="update_speed"]
