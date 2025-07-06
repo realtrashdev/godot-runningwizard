@@ -5,10 +5,7 @@ class_name PlayerJump
 @export var speed: float
 @export var jump_velocity: float
 
-var jumping : bool = false
-
 func enter():
-	jumping = true
 	player.velocity.y = jump_velocity
 
 func physics_update(delta: float):
@@ -19,17 +16,17 @@ func physics_update(delta: float):
 	movement()
 
 func gravity(delta: float) -> void:
-	if player.velocity.y < 0 and jumping:
+	if player.velocity.y < 0:
 		if Input.is_action_pressed("jump"):
 			player.velocity += player.get_gravity() / 2 * delta
 		else:
-			player.velocity += player.get_gravity() * (2 * delta)
+			player.velocity += player.get_gravity() * delta
  
 	elif player.velocity.y >= 0:
 		Transitioned.emit(self, "idle")
 
 func movement():
-	var direction := Input.get_axis("move_left", "move_right")
+	var direction: float = Input.get_axis("move_left", "move_right")
 	if direction:
 		player.velocity.x = direction * speed
 	else:

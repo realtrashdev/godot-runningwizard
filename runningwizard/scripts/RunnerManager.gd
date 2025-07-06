@@ -21,10 +21,12 @@ func _ready() -> void:
 	call_deferred("update_region", regions[randi() % regions.size()])
 
 func _process(_delta: float) -> void:
+	# DO NOT SHIP!!!!
 	debug_stuffs()
 
 func update_speed(new_speed: float):
 	game_speed = new_speed
+	game_speed = clampf(game_speed, 1, 5)
 	SpeedUpdate.emit(game_speed)
 	print("Speed updated to " + str(game_speed))
 
@@ -55,3 +57,9 @@ func debug_stuffs():
 		update_region(regions[1])
 	if Input.is_key_pressed(KEY_2):
 		update_region(regions[2])
+	if Input.is_key_label_pressed(KEY_3):
+		update_speed(1)
+	if Input.is_key_pressed(KEY_4):
+		update_speed(2)
+	if Input.is_key_pressed(KEY_5):
+		update_speed(3)

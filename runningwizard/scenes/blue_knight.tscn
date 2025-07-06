@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvlje4t1hpkjx"]
+[gd_scene load_steps=11 format=3 uid="uid://dvlje4t1hpkjx"]
 
 [ext_resource type="Script" uid="uid://pqyiryuu1ed4" path="res://EnemyTest.gd" id="1_1yn4p"]
 [ext_resource type="Resource" uid="uid://cx14slovu1xk8" path="res://scenes/resources/regions/CastleHalls.tres" id="2_7wesy"]
@@ -6,20 +6,28 @@
 [ext_resource type="PackedScene" uid="uid://du7sed0ba4hwb" path="res://scenes/components/hitbox_component.tscn" id="3_1yn4p"]
 [ext_resource type="PackedScene" uid="uid://do2k23x30u6vy" path="res://scenes/state_machine.tscn" id="4_mo2s0"]
 [ext_resource type="PackedScene" uid="uid://dikx16qkaqaq4" path="res://art/bluezone_knight.aseprite" id="6_7wesy"]
+[ext_resource type="Script" uid="uid://drwf06k1d545h" path="res://KnightIdle.gd" id="7_4xjpb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7wesy"]
 size = Vector2(10, 18)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_j3aj1"]
-size = Vector2(16, 16)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j3aj1"]
+radius = 2.0
+height = 8.0
 
-[node name="EnemyTest" type="CharacterBody2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7wesy"]
+radius = 4.0
+height = 14.0
+
+[node name="BlueKnight" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_1yn4p")
 enemy_name = "Test Enemy"
 enemy_region = ExtResource("2_7wesy")
+knockback = Vector2(-50, -300)
 
-[node name="bluezone_knight" parent="." instance=ExtResource("6_7wesy")]
+[node name="AnimatedSprite2D" parent="." instance=ExtResource("6_7wesy")]
 position = Vector2(0, -1)
 animation = &"run"
 autoplay = "run"
@@ -28,15 +36,33 @@ frame_progress = 0.40393
 [node name="HealthComponent" parent="." instance=ExtResource("2_mo2s0")]
 
 [node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_1yn4p")]
+collision_layer = 0
 health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
 position = Vector2(-5, -1)
 shape = SubResource("RectangleShape2D_7wesy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_j3aj1")
+[node name="BounceComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_1yn4p")]
+position = Vector2(0, -10)
+collision_layer = 2
+collision_mask = 0
+health_component = NodePath("../HealthComponent")
 
-[node name="State Machine" parent="." instance=ExtResource("4_mo2s0")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceComponent"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_j3aj1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_7wesy")
+
+[node name="State Machine" parent="." node_paths=PackedStringArray("initial_state") instance=ExtResource("4_mo2s0")]
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="State Machine" node_paths=PackedStringArray("knight")]
+script = ExtResource("7_4xjpb")
+knight = NodePath("../..")
+metadata/_custom_type_script = "uid://drwf06k1d545h"
 
 [connection signal="area_entered" from="HitboxComponent" to="." method="_on_hitbox_component_area_entered"]

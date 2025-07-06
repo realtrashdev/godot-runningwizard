@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c7akmihwts73n"]
+[gd_scene load_steps=13 format=3 uid="uid://c7akmihwts73n"]
 
 [ext_resource type="PackedScene" uid="uid://damraxuhfs78c" path="res://art/rw_nes_wizard.aseprite" id="1_dxroh"]
 [ext_resource type="Script" uid="uid://bcaikhjrgs2wb" path="res://scripts/Player.gd" id="1_qlg0r"]
@@ -14,6 +14,10 @@
 radius = 2.0
 height = 10.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ur7pv"]
+radius = 2.0
+height = 8.0
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
 radius = 3.0
 height = 14.0
@@ -21,14 +25,11 @@ height = 14.0
 [node name="Wizard" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
 collision_layer = 129
-collision_mask = 129
 script = ExtResource("1_qlg0r")
 
 [node name="AnimatedSprite2D" parent="." instance=ExtResource("1_dxroh")]
-animation = &"damage"
+animation = &"run"
 autoplay = "run"
-frame = 4
-frame_progress = 1.0
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_ur7pv")]
 
@@ -39,6 +40,16 @@ iframes = 2.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_lfa7q")
+
+[node name="BounceComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_dqkch")]
+position = Vector2(0, 8)
+collision_layer = 2
+collision_mask = 2
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceComponent"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ur7pv")
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_qhqgy")
@@ -76,4 +87,5 @@ position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_qlg0r")
 
 [connection signal="DamageTaken" from="HealthComponent" to="." method="player_damaged"]
+[connection signal="area_entered" from="BounceComponent" to="." method="check_bounce"]
 [connection signal="state_changed" from="State Machine" to="." method="anim_update"]

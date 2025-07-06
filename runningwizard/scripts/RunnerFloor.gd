@@ -34,4 +34,4 @@ func region_change(new_region: Region):
 	tween.tween_property(floor_bg, "modulate", region.colors[3], 1)
 
 func speed_change(new_speed: float):
-	floor_pieces[0].get_material().set_shader_parameter("speed", new_speed / 10)
+	floor_pieces[0].get_material().set_shader_parameter("speed", new_speed / 5)

@@ -11,7 +11,7 @@ func enter():
 
 func physics_update(delta: float):
 	# left/right movement
-	movement()
+	movement(delta)
 	
 	if !player.is_on_floor():
 		gravity(delta)
@@ -22,13 +22,17 @@ func physics_update(delta: float):
 	if air and player.is_on_floor():
 		Transitioned.emit(self, "land")
 
-func movement():
+func movement(delta: float):
 	var direction := Input.get_axis("move_left", "move_right")
+
 	if direction:
 		player.velocity.x = direction * speed
+		player.anim.speed_scale += direction * 0.1
 	else:
 		player.velocity.x = move_toward(player.velocity.x, 0, speed)
+		player.anim.speed_scale = player.game_speed
 
+	player.anim.speed_scale = clampf(player.anim.speed_scale, player.game_speed - 0.3, player.game_speed + 0.3)
 	player.move_and_slide()
 
 func gravity(delta: float):

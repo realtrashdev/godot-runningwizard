@@ -49,21 +49,26 @@ position = Vector2(0, 40)
 scale = Vector2(16, 4)
 texture = ExtResource("3_by3e4")
 
-[node name="PlayerBounds" type="StaticBody2D" parent="."]
+[node name="FloorHitbox" type="StaticBody2D" parent="."]
+position = Vector2(0, 27)
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorHitbox"]
+position = Vector2(0, -35)
+shape = SubResource("WorldBoundaryShape2D_bsp20")
+
+[node name="WallHitbox" type="StaticBody2D" parent="."]
 position = Vector2(0, 27)
 collision_layer = 128
 collision_mask = 128
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBounds"]
-position = Vector2(0, -35)
-shape = SubResource("WorldBoundaryShape2D_bsp20")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerBounds"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="WallHitbox"]
 position = Vector2(-124, -35)
 rotation = 1.5708
 shape = SubResource("WorldBoundaryShape2D_bsp20")
 
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlayerBounds"]
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="WallHitbox"]
 position = Vector2(0, -35)
 rotation = -1.5708
 shape = SubResource("WorldBoundaryShape2D_bsp20")

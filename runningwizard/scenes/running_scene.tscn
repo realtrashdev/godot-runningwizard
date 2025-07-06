@@ -1,32 +1,36 @@
-[gd_scene load_steps=10 format=3 uid="uid://1jsk7vo3ws7b"]
+[gd_scene load_steps=11 format=3 uid="uid://1jsk7vo3ws7b"]
 
 [ext_resource type="Script" uid="uid://ch50h1d0on2w6" path="res://scripts/RunnerManager.gd" id="1_bcuvt"]
 [ext_resource type="Resource" uid="uid://cx14slovu1xk8" path="res://scenes/resources/regions/CastleHalls.tres" id="2_mb8ng"]
 [ext_resource type="PackedScene" uid="uid://c7akmihwts73n" path="res://scenes/player.tscn" id="3_drav3"]
 [ext_resource type="PackedScene" uid="uid://bvxuu4dvkupf7" path="res://scenes/scrolling_floor.tscn" id="4_mxkxx"]
-[ext_resource type="AudioStream" uid="uid://bmydjncvk2ej1" path="res://sounds/meow12.mp3" id="5_eamyy"]
+[ext_resource type="AudioStream" uid="uid://bsgugga48xibm" path="res://sounds/meow19.mp3" id="5_mb8ng"]
 [ext_resource type="PackedScene" uid="uid://ci2d2vbjya2pn" path="res://scenes/UI/score_panel.tscn" id="6_ahj5x"]
+[ext_resource type="Script" uid="uid://c6csbihmgvwh6" path="res://scenes/Music.gd" id="6_drav3"]
 [ext_resource type="Script" uid="uid://3xi65e0xy8lo" path="res://scripts/UI/Score.gd" id="7_8lwym"]
 [ext_resource type="PackedScene" uid="uid://2bvutpa4etms" path="res://scenes/UI/region_enter_panel.tscn" id="8_rhprt"]
-[ext_resource type="PackedScene" uid="uid://dvlje4t1hpkjx" path="res://scenes/enemy_test.tscn" id="9_mb8ng"]
+[ext_resource type="PackedScene" uid="uid://dvlje4t1hpkjx" path="res://scenes/blue_knight.tscn" id="9_mb8ng"]
 
 [node name="RunnerGame" type="Node2D"]
 script = ExtResource("1_bcuvt")
-default_speed = 2.0
+default_speed = 1.0
 default_region = ExtResource("2_mb8ng")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Wizard" parent="." instance=ExtResource("3_drav3")]
 position = Vector2(-62, 22)
+collision_layer = 1
+collision_mask = 129
 
 [node name="Floor" parent="." instance=ExtResource("4_mxkxx")]
 position = Vector2(0, 40)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_eamyy")
-volume_db = -5.0
+stream = ExtResource("5_mb8ng")
 autoplay = true
+parameters/looping = true
+script = ExtResource("6_drav3")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -38,10 +42,10 @@ grow_vertical = 2
 
 [node name="ScorePanel" parent="UI" instance=ExtResource("6_ahj5x")]
 layout_mode = 0
-offset_left = -128.0
-offset_top = -112.0
-offset_right = -78.0
-offset_bottom = -91.0
+offset_left = -125.0
+offset_top = -109.0
+offset_right = -75.0
+offset_bottom = -99.0
 script = ExtResource("7_8lwym")
 
 [node name="RegionEntrancePanel" parent="UI" instance=ExtResource("8_rhprt")]
@@ -50,11 +54,12 @@ offset_top = -70.0
 offset_bottom = -50.0
 
 [node name="EnemyTest" parent="." instance=ExtResource("9_mb8ng")]
-position = Vector2(-8, 24)
+position = Vector2(152, 23)
 
 [connection signal="RegionUpdate" from="." to="Floor" method="region_change"]
 [connection signal="RegionUpdate" from="." to="UI/ScorePanel" method="update_region"]
 [connection signal="RegionUpdate" from="." to="UI/RegionEntrancePanel" method="update_region"]
 [connection signal="SpeedUpdate" from="." to="Wizard" method="update_speed"]
 [connection signal="SpeedUpdate" from="." to="Floor" method="speed_change"]
+[connection signal="SpeedUpdate" from="." to="AudioStreamPlayer2D" method="speed_update"]
 [connection signal="SpeedUpdate" from="." to="UI/ScorePanel" method="update_speed"]
