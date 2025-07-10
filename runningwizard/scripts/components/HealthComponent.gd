@@ -4,6 +4,7 @@ class_name HealthComponent
 signal DamageTaken()
 
 @export var MAX_HEALTH : float = 10.0
+
 var health : float
 
 func _ready() -> void:

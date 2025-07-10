@@ -9,14 +9,11 @@
 [ext_resource type="Script" uid="uid://kp23plg38quo" path="res://scripts/state machine/player/PlayerJump.gd" id="6_tuyoq"]
 [ext_resource type="Script" uid="uid://bqw70ua0dmdxc" path="res://scripts/state machine/player/PlayerLand.gd" id="7_fjrip"]
 [ext_resource type="Script" uid="uid://c7im35wj6tkax" path="res://scripts/state machine/player/PlayerDamaged.gd" id="9_ur7pv"]
+[ext_resource type="Script" uid="uid://d3xtev55l2f7g" path="res://scripts/state machine/player/PlayerThrow.gd" id="10_y4r1p"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lfa7q"]
 radius = 2.0
 height = 10.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ur7pv"]
-radius = 2.0
-height = 8.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
 radius = 3.0
@@ -28,8 +25,10 @@ collision_layer = 129
 script = ExtResource("1_qlg0r")
 
 [node name="AnimatedSprite2D" parent="." instance=ExtResource("1_dxroh")]
-animation = &"run"
+animation = &"damage"
 autoplay = "run"
+frame = 4
+frame_progress = 1.0
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_ur7pv")]
 
@@ -41,15 +40,12 @@ iframes = 2.0
 position = Vector2(0, 2)
 shape = SubResource("CapsuleShape2D_lfa7q")
 
-[node name="BounceComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("3_dqkch")]
-position = Vector2(0, 8)
-collision_layer = 2
+[node name="BounceRayCast2D" type="RayCast2D" parent="."]
+position = Vector2(0, 7)
+target_position = Vector2(0, 5)
 collision_mask = 2
-health_component = NodePath("../HealthComponent")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceComponent"]
-rotation = 1.5708
-shape = SubResource("CapsuleShape2D_ur7pv")
+hit_from_inside = true
+collide_with_areas = true
 
 [node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_qhqgy")
@@ -58,34 +54,36 @@ initial_state = NodePath("Idle")
 [node name="Idle" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
 script = ExtResource("4_dqkch")
 player = NodePath("../..")
-speed = 50.0
 metadata/_custom_type_script = "uid://bihtkqsfgfufq"
 
 [node name="Jump" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
 script = ExtResource("6_tuyoq")
 player = NodePath("../..")
-speed = 50.0
 jump_velocity = -220.0
 metadata/_custom_type_script = "uid://kp23plg38quo"
 
 [node name="Land" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
 script = ExtResource("7_fjrip")
 player = NodePath("../..")
-speed = 30.0
 land_time = 0.2
 metadata/_custom_type_script = "uid://bqw70ua0dmdxc"
 
 [node name="Damaged" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
 script = ExtResource("9_ur7pv")
 player = NodePath("../..")
-damage_time = 0.6
+damage_time = 0.8
 bounce_power = -100.0
 metadata/_custom_type_script = "uid://c7im35wj6tkax"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Throw" type="Node" parent="State Machine" node_paths=PackedStringArray("player")]
+script = ExtResource("10_y4r1p")
+player = NodePath("../..")
+throw_timer = 0.2
+metadata/_custom_type_script = "uid://d3xtev55l2f7g"
+
+[node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_qlg0r")
 
 [connection signal="DamageTaken" from="HealthComponent" to="." method="player_damaged"]
-[connection signal="area_entered" from="BounceComponent" to="." method="check_bounce"]
 [connection signal="state_changed" from="State Machine" to="." method="anim_update"]

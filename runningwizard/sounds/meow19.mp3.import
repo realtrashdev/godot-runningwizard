@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/meow19.mp3-03db348835f00dc03e85b34df6d1e532.m
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

@@ -42,7 +42,6 @@ func gravity(delta: float):
 	player.velocity += player.get_gravity() * delta
 
 func setup(knockback_power: Vector2):
-	print("setup")
 	_damage_time = damage_time
 	_bounce_power = bounce_power
 	player.velocity = Vector2.ZERO

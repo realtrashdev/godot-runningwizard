@@ -1,20 +1,47 @@
-[gd_scene load_steps=11 format=3 uid="uid://1jsk7vo3ws7b"]
+[gd_scene load_steps=16 format=3 uid="uid://1jsk7vo3ws7b"]
 
-[ext_resource type="Script" uid="uid://ch50h1d0on2w6" path="res://scripts/RunnerManager.gd" id="1_bcuvt"]
+[ext_resource type="Script" uid="uid://ch50h1d0on2w6" path="res://scripts/management/RunnerManager.gd" id="1_bcuvt"]
 [ext_resource type="Resource" uid="uid://cx14slovu1xk8" path="res://scenes/resources/regions/CastleHalls.tres" id="2_mb8ng"]
 [ext_resource type="PackedScene" uid="uid://c7akmihwts73n" path="res://scenes/player.tscn" id="3_drav3"]
+[ext_resource type="Shader" uid="uid://n5qne6y1pu6b" path="res://shaders/crt.gdshader" id="3_mxkxx"]
 [ext_resource type="PackedScene" uid="uid://bvxuu4dvkupf7" path="res://scenes/scrolling_floor.tscn" id="4_mxkxx"]
 [ext_resource type="AudioStream" uid="uid://bsgugga48xibm" path="res://sounds/meow19.mp3" id="5_mb8ng"]
 [ext_resource type="PackedScene" uid="uid://ci2d2vbjya2pn" path="res://scenes/UI/score_panel.tscn" id="6_ahj5x"]
-[ext_resource type="Script" uid="uid://c6csbihmgvwh6" path="res://scenes/Music.gd" id="6_drav3"]
+[ext_resource type="Script" uid="uid://c6csbihmgvwh6" path="res://scripts/Music.gd" id="6_drav3"]
 [ext_resource type="Script" uid="uid://3xi65e0xy8lo" path="res://scripts/UI/Score.gd" id="7_8lwym"]
 [ext_resource type="PackedScene" uid="uid://2bvutpa4etms" path="res://scenes/UI/region_enter_panel.tscn" id="8_rhprt"]
 [ext_resource type="PackedScene" uid="uid://dvlje4t1hpkjx" path="res://scenes/blue_knight.tscn" id="9_mb8ng"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eamyy"]
+shader = ExtResource("3_mxkxx")
+shader_parameter/resolution = Vector2(256, 224)
+shader_parameter/scan_line_amount = 0.1
+shader_parameter/warp_amount = 0.0
+shader_parameter/vignette_amount = 0.0
+shader_parameter/vignette_intensity = 0.0
+shader_parameter/grille_amount = 0.0
+shader_parameter/brightness_boost = 1.0
+
+[sub_resource type="Environment" id="Environment_drav3"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_mxkxx"]
+
+[sub_resource type="Compositor" id="Compositor_eamyy"]
+compositor_effects = Array[CompositorEffect]([null])
 
 [node name="RunnerGame" type="Node2D"]
 script = ExtResource("1_bcuvt")
 default_speed = 1.0
 default_region = ExtResource("2_mb8ng")
+
+[node name="CRTCanvas" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CRTCanvas"]
+material = SubResource("ShaderMaterial_eamyy")
+offset_right = 256.0
+offset_bottom = 224.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -55,6 +82,11 @@ offset_bottom = -50.0
 
 [node name="EnemyTest" parent="." instance=ExtResource("9_mb8ng")]
 position = Vector2(152, 23)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_drav3")
+camera_attributes = SubResource("CameraAttributesPractical_mxkxx")
+compositor = SubResource("Compositor_eamyy")
 
 [connection signal="RegionUpdate" from="." to="Floor" method="region_change"]
 [connection signal="RegionUpdate" from="." to="UI/ScorePanel" method="update_region"]

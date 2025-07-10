@@ -2,12 +2,14 @@ extends State
 class_name PlayerLand
 
 @export var player: CharacterBody2D
-@export var speed: float
 @export var land_time: float
+
+var speed: float
 
 var _land_time: float
 
 func enter():
+	speed = player.player_speed - 20
 	player.velocity.y = 0
 	_land_time = land_time
 

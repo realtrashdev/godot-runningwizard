@@ -3,7 +3,7 @@ extends PanelContainer
 
 @onready var label: Label = $MarginContainer/Label
 
-var score: float
+var score: float = 1
 var display_score: float
 
 var game_speed: float = 1

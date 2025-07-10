@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="PotionHealing" load_steps=2 format=3 uid="uid://c1on3ekeix7iw"]
+
+[ext_resource type="Script" uid="uid://gccqqcx8ffgq" path="res://scripts/classes/PotionHealing.gd" id="1_dcdlk"]
+
+[resource]
+script = ExtResource("1_dcdlk")
+heal_type = 0
+heal_operator = 0
+heal_amount = 1
+duration = 0.0
+naming_priority = 0
+intensity = 100.0
+metadata/_custom_type_script = "uid://gccqqcx8ffgq"
